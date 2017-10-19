@@ -1,6 +1,6 @@
 # LS2-Boston
 
-#Rules for creating directories
+# Rules for creating directories
 
 - game
   - domain
