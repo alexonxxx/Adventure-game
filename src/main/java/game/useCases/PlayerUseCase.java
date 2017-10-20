@@ -1,6 +1,6 @@
 package game.useCases;
 
-import game.domini.Player;
+import game.domain.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
