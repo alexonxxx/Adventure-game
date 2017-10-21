@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/bookmarks.iml" filepath="$PROJECT_DIR$/bookmarks.iml" />
       <module fileurl="file://$PROJECT_DIR$/gs-accessing-data-rest.iml" filepath="$PROJECT_DIR$/gs-accessing-data-rest.iml" />
     </modules>
   </component>

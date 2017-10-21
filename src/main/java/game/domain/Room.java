@@ -7,10 +7,28 @@ import javax.persistence.Id;
 @Entity
 public class Room {
 
-    public static int NORD = 0;
-    public static int SUD = 1;
-    public static int EST = 2;
-    public static int OEST = 3;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public static final int NORD = 0;
+    public static final int SUD = 1;
+    public static final int OEST = 2;
+    public static final int EST = 3;
+
+    public static final int UP = 0;
+    public static final int DOWN = 1;
+    public static final int LEFT = 2;
+    public static final int RIGHT = 3;
+
+
+    public static final int oberta = 0;
+    public static final int TANCADA = -1;
+
 
     public String description;
 
@@ -18,19 +36,30 @@ public class Room {
     public int codigo_objeto; // -1 no hay
     public int codigo_monstruo; // -1 no hay
 
-    @Id
-    @GeneratedValue
-    private Long id;
 
 
-    public String position;
+    private int x;
 
-    Room() { // jpa only
+    public int getX() {
+        return x;
     }
 
-    public Room(String position, String description, int norte, int sur, int este, int oeste) {
+    public int getY() {
+        return y;
+    }
 
-        this.position = position;
+    private int y;
+    public String position;
+
+    public Room() { // jpa only
+    }
+
+    public Room(int x, int y, String description, int norte, int sur, int este, int oeste) {
+
+        this.x = x;
+        this.y = y;
+
+        this.position = x+"-"+y;
         this.description = description;
         this.salidas = new int[4];
 
@@ -47,8 +76,6 @@ public class Room {
 
     }
 
-    public String getDescription() {
-        return description;
-    }
+
 
 }

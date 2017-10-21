@@ -1,6 +1,8 @@
 package game.restControllers;
 
+import game.repositories.PlayerRepository;
 import game.repositories.RoomRepository;
+import game.useCases.PlayerUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,84 +12,65 @@ import game.domain.*;
 
 
 @RestController
-@RequestMapping("/player/")
+@RequestMapping("/player")
 public class PlayerRestController {
 
-    private RoomRepository roomRepository;
-    Player player;
+    private final RoomRepository roomRepository;
+    private final PlayerRepository playerRepository;
+    private PlayerUseCase playerUseCase;
+
 
     @Autowired
-    PlayerRestController(RoomRepository roomRepository) {
+    PlayerRestController(RoomRepository roomRepository, PlayerRepository playerRepository) {
         this.roomRepository = roomRepository;
-        player = new Player();
-    }
+        this.playerRepository = playerRepository;
 
-
-    private void doMove(int dx, int dy) {
-
-        Room room = roomRepository.findByPosition(player.x +"-"+player.y)
-                .orElseThrow(
-                        () -> new game.RoomNotFoundException(player.x,player.y));
-
-        int v = room.salidas[Room.NORD];
-
-        if (v < 0) {
-            //mensaje("La salida no existe.\n");
-        } else if (v == 0) {
-            player.x += dx;
-            player.y += dy;
-        } else if (v > 0) {
-/*
-            if (jugador->codigo_objeto_llave >= 0 && lobjetos.objetos[jugador->codigo_objeto_llave].atributo == v) {
-
-                habitacion.salidas[salida]= 0;
-                jugador->codigo_objeto_llave= -1;
-                mhabitaciones[jugador->i][jugador->j]= habitacion;
-                OpcionMover(lobjetos, mhabitaciones, jugador, di, dj, salida);
-            } else {
-                //mensaje("La salida esta cerrada y no llevas la llave.");
-            }
-*/
-        }
-
+        playerUseCase = new PlayerUseCase();
     }
 
     @PutMapping("moveup")
-    public String doMoveUp() {
-
-        doMove(0,1);
-
-        return "{\n" +
-                "\"room\": [{\"x\":"+ player.x +"},{\"y\":\""+ player.y +"\"}],\n" +
-                "\"error\": \"\",\n" +
-                "}";
+    public Room doMoveUp() {
+        return doMove(Room.UP);
     }
 
     @PutMapping("movedown")
-    public String doMoveDown() {
-        player.y--;
-        return "{\n" +
-                "\"room\": [{\"x\":"+ player.x +"},{\"y\":\""+ player.y +"\"}],\n" +
-                "\"error\": \"\",\n" +
-                "}";
+    public Room doMoveDown() {
+        return doMove(Room.DOWN);
     }
 
     @PutMapping("moveright")
-    public String doMoveRight() {
-        player.x++;
-        return "{\n" +
-                "\"room\": [{\"x\":"+ player.x +"},{\"y\":\""+ player.y +"\"}],\n" +
-                "\"error\": \"\",\n" +
-                "}";
+    public Room doMoveRight() {
+        return doMove(Room.RIGHT);
     }
 
     @PutMapping("moveleft")
-    public String doMoveLeft() {
-        player.x--;
-        return "{\n" +
-                "\"room\": [{\"x\":"+ player.x +"},{\"y\":\""+ player.y +"\"}],\n" +
-                "\"error\": \"\",\n" +
-                "}";
+    public Room doMoveLeft() {
+        return doMove(Room.LEFT);
+
+    }
+
+
+
+    private Room doMove(int direccio) {
+
+        // Per fer el moviment recuperem el jugador y la seva habitació actual
+        Player player = playerRepository.findAll().get(0);
+
+        Room room = roomRepository.findByPosition(player.getPosition())
+                .orElseThrow(
+                        () -> new game.RoomNotFoundException(player.getPosition()));
+
+        playerUseCase.move(player, room, direccio);
+
+        room = roomRepository.findByPosition(player.getPosition())
+                .orElseThrow(
+                        () -> new game.RoomNotFoundException(player.getPosition()));
+
+        playerRepository.save(player);
+
+        return room;
+
+
     }
 
 

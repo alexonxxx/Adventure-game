@@ -2,29 +2,41 @@ package game.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+@Entity
 public class Player {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Player() { // jpa only
+    }
 
     public int x,y;
 
-    private String firstName;
-    private String lastName;
+    private String name;
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+
+    public Player(String name) {
+        this.name = name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+
+    public String getPosition() {
+        return x +"-"+ y;
     }
 }

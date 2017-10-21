@@ -1,13 +1,24 @@
 package game;
 
-import game.domain.Room;
-import game.repositories.RoomRepository;
+import game.domain.Player;
+import game.repositories.PlayerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+
+import game.domain.Room;
+import game.repositories.RoomRepository;
+
+import static game.domain.Room.*;
+
+
 @SpringBootApplication
+@AutoConfigurationPackage
+//@ComponentScan(basePackageClasses = RoomRestController.class)
+//@ComponentScan(basePackageClasses = PlayerRestController.class)
 public class Application {
 
 
@@ -18,21 +29,23 @@ public class Application {
     }
 
     @Bean
-    CommandLineRunner init(RoomRepository roomRepository) {
+    CommandLineRunner init(
+            RoomRepository roomRepository, PlayerRepository playerRepository
+    ) {
 
         return (evt) -> {
 
-            Room room[][] = new Room[MAX_ROOMS][MAX_ROOMS];
+            // Inicialitzem les habitacions
+            roomRepository.save(new Room(0,0,"Entrada", TANCADA,TANCADA, oberta,TANCADA ));
+            roomRepository.save(new Room(1,0,"Passadis", TANCADA,TANCADA, oberta, oberta));
+            roomRepository.save(new Room(2,0,"Tresor", TANCADA,TANCADA,TANCADA, oberta));
 
-            for (int i = 0; i < MAX_ROOMS; i++) {
-                for (int j = 0; j < MAX_ROOMS ; j++) {
-                    room[i][j] = roomRepository.save(new Room(i+"-"+j,i+" "+j, 0,0,0,0 ));
-                }
-            }
-
-
+            // Inicialitzem un jugador
+            playerRepository.save(new Player("One"));
 
         };
+
+
     }
 }
 
