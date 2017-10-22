@@ -4,6 +4,7 @@ import game.domain.Player;
 import game.domain.Room;
 import game.repositories.PlayerRepository;
 import game.repositories.RoomRepository;
+import game.useCases.PlayerUseCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
-import sun.security.ssl.Debug;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -28,8 +27,6 @@ import java.util.Arrays;
 
 import static game.domain.Room.TANCADA;
 import static game.domain.Room.oberta;
-
-import static org.hamcrest.Matchers.*;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -60,6 +57,9 @@ public class PlayerRestControllerTest {
     @Autowired
     private PlayerRepository playerRepository;
 
+    @Autowired
+    private PlayerUseCase playerUseCase;
+
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -87,15 +87,25 @@ public class PlayerRestControllerTest {
         mapa = new Room[3][3];
 
         // Inicialitzem les habitacions
+        /* norte, sur, este, oeste
+            +---+
+            | N |
+            |O E|
+            | S |
+            +---+
+                 [1,2]
+            [0,1][1,1][2,1]
+                 [1,0]
+         */
 
+        mapa[1][2] = new Room(1,2,"Adalt", TANCADA,oberta, TANCADA,TANCADA );
         mapa[0][1] = new Room(0,1,"Esquerra", TANCADA,TANCADA, oberta,TANCADA );
         mapa[1][1] = new Room(1,1,"Centre", oberta,oberta, oberta,oberta );
         mapa[2][1] = new Room(2,1,"Dreta", TANCADA,TANCADA, TANCADA,oberta );
-        mapa[1][2] = new Room(1,2,"Adalt", TANCADA,oberta, TANCADA,TANCADA );
         mapa[1][0] = new Room(1,0,"Abaix", oberta,TANCADA, TANCADA,TANCADA );
 
-        for (int j = 0; j < mapa.length; j++) {
-            for (int i = 0; i < mapa[j].length ; i++) {
+        for (int i = 0; i < mapa.length ; i++) {
+        for (int j = 0; j < mapa[i].length; j++) {
                 if (mapa[i][j] != null)
                     roomRepository.save(mapa[i][j]);
             }
@@ -106,40 +116,40 @@ public class PlayerRestControllerTest {
     @Test
     public void moveright() throws Exception {
 
-        Room origen = mapa[1][1];
-        Room destino = mapa[2][1];
+        Room origen = mapa[1][1]; // Centre
+        Room destino = mapa[2][1]; // Dreta
 
-        Player player =  playerRepository.findById(1L).get();
-        player.x = 1;
-        player.y = 1;
-        playerRepository.save(player);
+        Player player =  playerUseCase.getFirst();
+
+        playerUseCase.movePlayerToRoom(player, origen);
 
         this.mockMvc.perform(put("/player/moveright")
                 .contentType(contentType)
-                .content(json(origen)))
+                .content(""))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id").value(destino.getId().longValue()))
+                .andExpect(jsonPath("$.room[0].x").value(destino.getX()))
+                .andExpect(jsonPath("$.room[1].y").value(destino.getY()))
         ;
     }
 
     @Test
     public void moveleft() throws Exception {
 
-        Room origen = mapa[1][1];
-        Room destino = mapa[0][1];
+        Room origen = mapa[1][1]; // Centre
+        Room destino = mapa[0][1]; // Esquerra
 
-        Player player =  playerRepository.findById(1L).get();
-        player.x = 1;
-        player.y = 1;
-        playerRepository.save(player);
+        Player player =  playerUseCase.getFirst();
+
+        playerUseCase.movePlayerToRoom(player, origen);
 
         this.mockMvc.perform(put("/player/moveleft")
                 .contentType(contentType)
-                .content(json(origen)))
+                .content(""))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id").value(destino.getId().longValue()))
+                .andExpect(jsonPath("$.room[0].x").value(destino.getX()))
+                .andExpect(jsonPath("$.room[1].y").value(destino.getY()))
         ;
     }
 
@@ -147,39 +157,39 @@ public class PlayerRestControllerTest {
     @Test
     public void moveup() throws Exception {
 
-        Room origen = mapa[1][1];
-        Room destino = mapa[1][2];
+        Room origen = mapa[1][1]; // Centre
+        Room destino = mapa[1][2]; // Adalt
 
-        Player player =  playerRepository.findById(1L).get();
-        player.x = 1;
-        player.y = 1;
-        playerRepository.save(player);
+        Player player =  playerUseCase.getFirst();
+
+        playerUseCase.movePlayerToRoom(player, origen);
 
         this.mockMvc.perform(put("/player/moveup")
                 .contentType(contentType)
                 .content(json(origen)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id").value(destino.getId().longValue()))
+                .andExpect(jsonPath("$.room[0].x").value(destino.getX()))
+                .andExpect(jsonPath("$.room[1].y").value(destino.getY()))
         ;
     }
     @Test
     public void movedown() throws Exception {
 
-        Room origen = mapa[1][1];
-        Room destino = mapa[1][0];
+        Room origen = mapa[1][1]; // Centre
+        Room destino = mapa[1][0]; // Abaix
 
-        Player player =  playerRepository.findById(1L).get();
-        player.x = 1;
-        player.y = 1;
-        playerRepository.save(player);
+        Player player =  playerUseCase.getFirst();
+
+        playerUseCase.movePlayerToRoom(player, origen);
 
         this.mockMvc.perform(put("/player/movedown")
                 .contentType(contentType)
                 .content(json(origen)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id").value(destino.getId().longValue()))
+                .andExpect(jsonPath("$.room[0].x").value(destino.getX()))
+                .andExpect(jsonPath("$.room[1].y").value(destino.getY()))
         ;
     }
 

@@ -39,6 +39,7 @@ public class Room {
 
 
     private int x;
+    private int y;
 
     public int getX() {
         return x;
@@ -48,8 +49,8 @@ public class Room {
         return y;
     }
 
-    private int y;
     public String position;
+
 
     public Room() { // jpa only
     }

@@ -16,45 +16,43 @@ import game.domain.*;
 public class PlayerRestController {
 
     private final RoomRepository roomRepository;
-    private final PlayerRepository playerRepository;
-    private PlayerUseCase playerUseCase;
+
+    private final PlayerUseCase playerUseCase;
 
 
     @Autowired
-    PlayerRestController(RoomRepository roomRepository, PlayerRepository playerRepository) {
+    PlayerRestController(RoomRepository roomRepository,  PlayerUseCase playerUseCase) {
         this.roomRepository = roomRepository;
-        this.playerRepository = playerRepository;
-
-        playerUseCase = new PlayerUseCase();
+        this.playerUseCase = playerUseCase;
     }
 
     @PutMapping("moveup")
-    public Room doMoveUp() {
+    public Coord doMoveUp() {
         return doMove(Room.UP);
     }
 
     @PutMapping("movedown")
-    public Room doMoveDown() {
+    public Coord doMoveDown() {
         return doMove(Room.DOWN);
     }
 
     @PutMapping("moveright")
-    public Room doMoveRight() {
+    public Coord doMoveRight() {
         return doMove(Room.RIGHT);
     }
 
     @PutMapping("moveleft")
-    public Room doMoveLeft() {
+    public Coord doMoveLeft() {
         return doMove(Room.LEFT);
 
     }
 
 
 
-    private Room doMove(int direccio) {
+    private Coord doMove(int direccio) {
 
         // Per fer el moviment recuperem el jugador y la seva habitació actual
-        Player player = playerRepository.findAll().get(0);
+        Player player = playerUseCase.getFirst();
 
         Room room = roomRepository.findByPosition(player.getPosition())
                 .orElseThrow(
@@ -62,14 +60,7 @@ public class PlayerRestController {
 
         playerUseCase.move(player, room, direccio);
 
-        room = roomRepository.findByPosition(player.getPosition())
-                .orElseThrow(
-                        () -> new game.RoomNotFoundException(player.getPosition()));
-
-        playerRepository.save(player);
-
-        return room;
-
+        return new Coord(player.x, player.y);
 
     }
 

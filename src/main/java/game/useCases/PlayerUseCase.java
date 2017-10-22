@@ -2,6 +2,7 @@ package game.useCases;
 
 import game.domain.Player;
 import game.domain.Room;
+import game.repositories.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,11 +10,17 @@ import java.util.List;
 @Service
 public final class PlayerUseCase {
 
-    public PlayerUseCase() {
+    private final PlayerRepository playerRepository;
+
+    public PlayerUseCase(PlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
     }
 
-    public void position(Player player, Room room) {
+    public void movePlayerToRoom(Player player, Room room) {
 
+        player.x = room.getX();
+        player.y = room.getY();
+        playerRepository.save(player);
     }
 
 
@@ -54,5 +61,12 @@ public final class PlayerUseCase {
 */
         }
 
+        playerRepository.save(player);
+
+
+    }
+
+    public Player getFirst() {
+        return playerRepository.findAll().get(0);
     }
 }
