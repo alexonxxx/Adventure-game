@@ -1,14 +1,35 @@
 package game.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Player {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
     private int life;
-    private Item shield;
-    private Item weapon;
-    private Item key;
+    private String name;
+    private int weapon;
+    private int shield;
+    private int posX;
+    private int posY;
 
-    public Player() {
+    private int key;
 
+    public Player(String name) {
+        this.posX = 0;
+        this.posY = 0;
+        this.life = 20;
+        this.name = name;
+        this.weapon = 0;
+        this.shield = 0;
+        this.key = 0;
     }
 
     public int getLife() {
@@ -19,27 +40,43 @@ public class Player {
         this.life = life;
     }
 
-    public Item getShield() {
-        return shield;
+    public int getPosX() {
+        return posX;
     }
 
-    public void setShield(Item shield) {
-        this.shield = shield;
+    public void setPosX(int posX) {
+        this.posX = posX;
     }
 
-    public Item getWeapon() {
+    public int getPosY() {
+        return posY;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+
+    public int getWeapon() {
         return weapon;
     }
 
-    public void setWeapon(Item weapon) {
+    public void setWeapon(int weapon) {
         this.weapon = weapon;
     }
 
-    public Item getKey() {
-        return key;
+    public int getShield() {
+        return shield;
     }
 
-    public void setKey(Item key) {
+    public void setShield(int shield) {
+        this.shield = shield;
+    }
+
+    public int getKey() {
+        return (this.key == 0) ? null : this.key;
+    }
+
+    public void setKey(int key) {
         this.key = key;
     }
 }
