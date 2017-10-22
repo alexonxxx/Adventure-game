@@ -76,8 +76,8 @@ public class RoomRestControllerTest {
 
         this.roomRepository.deleteAllInBatch();
 
-        this.roomList.add(roomRepository.save(new Room(0,0,"",0,0,0,0)));
-        this.roomList.add(roomRepository.save(new Room(1,1,"",0,0,0,0)));
+        this.roomList.add(roomRepository.save(new Room(0,0,"", 0, 0, 0, 0, -1, -1)));
+        this.roomList.add(roomRepository.save(new Room(1,1,"", 0, 0, 0, 0, -1, -1)));
     }
 
 
@@ -107,7 +107,7 @@ public class RoomRestControllerTest {
 
     @Test
     public void createRoom() throws Exception {
-        String roomJson = json(new Room(1,0, "", 0,0,0,0));
+        String roomJson = json(new Room(1,0, "", 0, 0, 0, 0, -1, -1));
 
         this.mockMvc.perform(post("/room")
                 .contentType(contentType)

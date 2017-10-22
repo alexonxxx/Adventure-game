@@ -98,11 +98,11 @@ public class PlayerRestControllerTest {
                  [1,0]
          */
 
-        mapa[1][2] = new Room(1,2,"Adalt", TANCADA,oberta, TANCADA,TANCADA );
-        mapa[0][1] = new Room(0,1,"Esquerra", TANCADA,TANCADA, oberta,TANCADA );
-        mapa[1][1] = new Room(1,1,"Centre", oberta,oberta, oberta,oberta );
-        mapa[2][1] = new Room(2,1,"Dreta", TANCADA,TANCADA, TANCADA,oberta );
-        mapa[1][0] = new Room(1,0,"Abaix", oberta,TANCADA, TANCADA,TANCADA );
+        mapa[1][2] = new Room(1,2,"Adalt", TANCADA, TANCADA, TANCADA, oberta, -1, -1);
+        mapa[0][1] = new Room(0,1,"Esquerra", TANCADA, TANCADA, oberta, TANCADA, -1, -1);
+        mapa[1][1] = new Room(1,1,"Centre", oberta, oberta, oberta, oberta, -1, -1);
+        mapa[2][1] = new Room(2,1,"Dreta", oberta, TANCADA, TANCADA, TANCADA, -1, -1);
+        mapa[1][0] = new Room(1,0,"Abaix", TANCADA, oberta, TANCADA, TANCADA, -1, -1);
 
         for (int i = 0; i < mapa.length ; i++) {
         for (int j = 0; j < mapa[i].length; j++) {

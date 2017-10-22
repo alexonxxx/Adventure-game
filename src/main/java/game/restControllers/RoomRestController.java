@@ -38,7 +38,7 @@ public class RoomRestController {
 //        this.validateUser(userId);
 
 
-        Room result = roomRepository.save(new Room(input.getX(), input.getY(), input.description, input.salidas[0], input.salidas[1], input.salidas[2], input.salidas[3]));
+        Room result = roomRepository.save(new Room(input.getX(), input.getY(), input.description, input.salidas[3], input.salidas[0], input.salidas[2], input.salidas[1], -1, -1));
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
