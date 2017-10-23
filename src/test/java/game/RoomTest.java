@@ -11,7 +11,7 @@ public class RoomTest {
 
 
     @Test
-    public void showRoom() {
+    public void showRoomExits() {
 
         Room room = new Room(0,0,"", 0, 0, 1, 0, 5, -1);
 

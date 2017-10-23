@@ -1,5 +1,6 @@
 package game.useCases;
 
+import game.PlayerAlreadyExistException;
 import game.domain.Player;
 import game.domain.Room;
 import game.repositories.PlayerRepository;
@@ -69,4 +70,14 @@ public final class PlayerUseCase {
     public Player getFirst() {
         return playerRepository.findAll().get(0);
     }
+
+
+    public Player save(Player player) throws PlayerAlreadyExistException {
+
+        if (playerRepository.findByUsername(player.getUsername()).isPresent() )
+            throw new PlayerAlreadyExistException(player.getUsername());
+
+        return playerRepository.save(player);
+    }
+
 }

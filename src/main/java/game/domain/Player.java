@@ -1,8 +1,6 @@
 package game.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Player {
@@ -20,19 +18,20 @@ public class Player {
 
     public int x,y;
 
-    private String name;
+    @Column(name = "username", nullable = false, unique=true)
+    private String username;
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 
-    public Player(String name) {
-        this.name = name;
+    public Player(String username) {
+        this.username = username;
     }
 
 
