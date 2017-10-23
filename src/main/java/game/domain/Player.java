@@ -10,6 +10,20 @@ import javax.persistence.Id;
 @Entity
 public class Player {
 
+    // INITIAL VALUES
+    @JsonIgnore
+    private final int INITIA_LIFE = 20;
+    @JsonIgnore
+    private final int INITIA_SHIELD = 0;
+    @JsonIgnore
+    private final int INITIA_WEAPON = 0;
+    @JsonIgnore
+    private final int INITIA_KEY = -99;
+    @JsonIgnore
+    private final int INITIA_POSX = 0;
+    @JsonIgnore
+    private final int INITIA_POSY = 0;
+    // END INITIAL VALUES
 
     @Id
     @GeneratedValue
@@ -30,13 +44,13 @@ public class Player {
     }
 
     public Player(String name) {
-        this.posX = 0;
-        this.posY = 0;
-        this.life = 20;
+        this.posX = this.INITIA_POSX;
+        this.posY = this.INITIA_POSY;
+        this.life = this.INITIA_LIFE;
         this.name = name;
-        this.weapon = 0;
-        this.shield = 0;
-        this.key = -99;
+        this.weapon = this.INITIA_WEAPON;
+        this.shield = this.INITIA_WEAPON;
+        this.key = this.INITIA_KEY;
     }
 
     public Long getId() {
@@ -69,5 +83,29 @@ public class Player {
 
     public int getKey() {
         return key;
+    }
+
+    public int getINITIA_LIFE() {
+        return INITIA_LIFE;
+    }
+
+    public int getINITIA_SHIELD() {
+        return INITIA_SHIELD;
+    }
+
+    public int getINITIA_WEAPON() {
+        return INITIA_WEAPON;
+    }
+
+    public int getINITIA_KEY() {
+        return INITIA_KEY;
+    }
+
+    public int getINITIA_POSX() {
+        return INITIA_POSX;
+    }
+
+    public int getINITIA_POSY() {
+        return INITIA_POSY;
     }
 }
