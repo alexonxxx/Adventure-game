@@ -26,8 +26,11 @@ public class Room {
     public static final int RIGHT = 3;
 
 
-    public static final int oberta = 0;
+    public static final int OBERTA = 0;
     public static final int TANCADA = -1;
+    public static final int KEY_1 = 1;
+    public static final int KEY_2 = 2;
+    public static final int KEY_3 = 3;
 
 
     public String description;

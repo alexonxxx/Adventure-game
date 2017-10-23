@@ -4,17 +4,19 @@ import game.PlayerAlreadyExistException;
 import game.domain.Player;
 import game.domain.Room;
 import game.repositories.PlayerRepository;
+import game.repositories.RoomRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public final class PlayerUseCase {
 
+    private final RoomRepository roomRepository;
     private final PlayerRepository playerRepository;
 
-    public PlayerUseCase(PlayerRepository playerRepository) {
+    public PlayerUseCase(PlayerRepository playerRepository, RoomRepository roomRepository) {
+
         this.playerRepository = playerRepository;
+        this.roomRepository = roomRepository;
     }
 
     public void movePlayerToRoom(Player player, Room room) {
@@ -48,21 +50,25 @@ public final class PlayerUseCase {
             player.x += dx;
             player.y += dy;
 
+            playerRepository.save(player);
+
         } else if (v > 0) {
-/*
-            if (jugador->codigo_objeto_llave >= 0 && lobjetos.objetos[jugador->codigo_objeto_llave].atributo == v) {
 
-                habitacion.salidas[salida]= 0;
-                jugador->codigo_objeto_llave= -1;
-                mhabitaciones[jugador->i][jugador->j]= habitacion;
-                OpcionMover(lobjetos, mhabitaciones, jugador, di, dj, salida);
-            } else {
-                //mensaje("La salida esta cerrada y no llevas la llave.");
+            // la sortida te una porta
+
+            if (player.key != v) {
+                throw  new game.RoomLockedException(v);
             }
-*/
-        }
 
-        playerRepository.save(player);
+            // Deixa la porta oberta i gasta la clau
+            room.salidas[direccio] = 0;
+            player.key = -1;
+
+            roomRepository.save(room);
+            playerRepository.save(player);
+
+            move(player,room,direccio);
+        }
 
 
     }
