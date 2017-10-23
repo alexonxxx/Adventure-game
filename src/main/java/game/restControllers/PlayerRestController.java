@@ -1,14 +1,17 @@
 package game.restControllers;
 
-import game.repositories.PlayerRepository;
+import game.PlayerAlreadyExistException;
 import game.repositories.RoomRepository;
 import game.useCases.PlayerUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import game.domain.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 
 @RestController
@@ -25,6 +28,28 @@ public class PlayerRestController {
         this.roomRepository = roomRepository;
         this.playerUseCase = playerUseCase;
     }
+
+    @RequestMapping(method = RequestMethod.POST)
+    ResponseEntity<?> addPlayer(@RequestBody Player input) { //@PathVariable String userId,
+//        this.validateUser(userId);
+
+        try {
+            Player result = playerUseCase.save(new Player(input.getUsername()));
+
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(result.getId()).toUri();
+
+            return ResponseEntity.created(location).build();
+
+        } catch (PlayerAlreadyExistException e) {
+            // log excpetion first, then return Conflict (409)
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+    }
+
+
 
     @PutMapping("moveup")
     public Coord doMoveUp() {

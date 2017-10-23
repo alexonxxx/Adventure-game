@@ -76,10 +76,39 @@ public class RoomRestControllerTest {
 
         this.roomRepository.deleteAllInBatch();
 
-        this.roomList.add(roomRepository.save(new Room(0,0,"",0,0,0,0)));
-        this.roomList.add(roomRepository.save(new Room(1,1,"",0,0,0,0)));
+        this.roomList.add(roomRepository.save(new Room(0,0,"", 0, 0, 0, 0, -1, -1)));
+        this.roomList.add(roomRepository.save(new Room(1,1,"", 0, 0, 0, 0, -1, -1)));
     }
 
+
+    @Test
+    public void addRoom() throws Exception {
+
+        Room room = new Room(0,0,"Nova habitació", 0, 0, 0, 0, -1, -1);
+
+        this.mockMvc.perform(post("/room")
+                .contentType(contentType)
+                .content(json(room)))
+                .andExpect(status().isCreated())
+        ;
+    }
+
+    @Test
+    public void deleteRoom() throws Exception {
+
+        this.mockMvc.perform(delete("/room/"
+                + this.roomList.get(0).getId()))
+                .andExpect(status().isNoContent())
+        ;
+    }
+
+    @Test
+    public void deleteNonExistingRoom() throws Exception {
+
+        this.mockMvc.perform(delete("/room/1000"))
+                .andExpect(status().isNotFound())
+        ;
+    }
 
     @Test
     public void readSingleRoom() throws Exception {
@@ -107,7 +136,7 @@ public class RoomRestControllerTest {
 
     @Test
     public void createRoom() throws Exception {
-        String roomJson = json(new Room(1,0, "", 0,0,0,0));
+        String roomJson = json(new Room(1,0, "", 0, 0, 0, 0, -1, -1));
 
         this.mockMvc.perform(post("/room")
                 .contentType(contentType)

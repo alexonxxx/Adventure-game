@@ -26,8 +26,11 @@ public class Room {
     public static final int RIGHT = 3;
 
 
-    public static final int oberta = 0;
+    public static final int OBERTA = 0;
     public static final int TANCADA = -1;
+    public static final int KEY_1 = 1;
+    public static final int KEY_2 = 2;
+    public static final int KEY_3 = 3;
 
 
     public String description;
@@ -55,7 +58,7 @@ public class Room {
     public Room() { // jpa only
     }
 
-    public Room(int x, int y, String description, int norte, int sur, int este, int oeste) {
+    public Room(int x, int y, String description, int west, int north, int east, int south, int object, int monster) {
 
         this.x = x;
         this.y = y;
@@ -64,19 +67,34 @@ public class Room {
         this.description = description;
         this.salidas = new int[4];
 
-        this.salidas[NORD]= norte;
-        this.salidas[SUD]= sur;
-        this.salidas[EST]= este;
-        this.salidas[OEST]= oeste;
+        this.salidas[NORD]= north;
+        this.salidas[SUD]= south;
+        this.salidas[EST]= east;
+        this.salidas[OEST]= west;
 
-        this.codigo_objeto = -1;
-        this.codigo_monstruo = -1;
+        this.codigo_objeto = object;
+        this.codigo_monstruo = monster;
 
         // TODO: afegir objecte
         // TODO: afegir monstre
 
     }
 
+    /*
+            0
+        0	-	0
+            0
+     */
+    public String toString() {
+
+        String s = "";
+
+        s += " "+"\t"+ this.salidas[NORD] +"\t"+" \n";
+        s += this.salidas[OEST] +"\t"+ this.codigo_objeto +"\t"+ this.salidas[EST] +"\n";
+        s += " "+"\t"+ this.salidas[SUD] +"\t"+" \n";
+
+        return s;
+    }
 
 
 }
