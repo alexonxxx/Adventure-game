@@ -36,9 +36,9 @@ public class Application {
         return (evt) -> {
 
             // Inicialitzem les habitacions
-            roomRepository.save(new Room(0,0,"Entrada", TANCADA, TANCADA, oberta, TANCADA, -1, -1));
-            roomRepository.save(new Room(1,0,"Passadis", oberta, TANCADA, oberta, TANCADA, -1, -1));
-            roomRepository.save(new Room(2,0,"Tresor", oberta, TANCADA, TANCADA, TANCADA, -1, -1));
+            roomRepository.save(new Room(0,0,"Entrada", TANCADA, TANCADA, OBERTA, TANCADA, -1, -1));
+            roomRepository.save(new Room(1,0,"Passadis", OBERTA, TANCADA, OBERTA, TANCADA, -1, -1));
+            roomRepository.save(new Room(2,0,"Tresor", OBERTA, TANCADA, TANCADA, TANCADA, -1, -1));
 
             // Inicialitzem un jugador
             playerRepository.save(new Player("One"));
