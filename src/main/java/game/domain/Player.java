@@ -34,6 +34,7 @@ public class Player {
         this.username = username;
     }
 
+    public int key = -1;
 
     public String getPosition() {
         return x +"-"+ y;

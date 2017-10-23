@@ -106,11 +106,11 @@ public class PlayerRestControllerTest {
          */
 
         mapa = new Room[3][3];
-        mapa[1][2] = new Room(1,2,"Adalt", TANCADA, TANCADA, TANCADA, oberta, -1, -1);
-        mapa[0][1] = new Room(0,1,"Esquerra", TANCADA, TANCADA, oberta, TANCADA, -1, -1);
-        mapa[1][1] = new Room(1,1,"Centre", oberta, oberta, oberta, oberta, -1, -1);
-        mapa[2][1] = new Room(2,1,"Dreta", oberta, TANCADA, TANCADA, TANCADA, -1, -1);
-        mapa[1][0] = new Room(1,0,"Abaix", TANCADA, oberta, TANCADA, TANCADA, -1, -1);
+        mapa[1][2] = new Room(1,2,"Adalt", TANCADA, TANCADA, TANCADA, OBERTA, -1, -1);
+        mapa[0][1] = new Room(0,1,"Esquerra", TANCADA, TANCADA, OBERTA, TANCADA, -1, -1);
+        mapa[1][1] = new Room(1,1,"Centre", OBERTA, OBERTA, OBERTA, OBERTA, -1, -1);
+        mapa[2][1] = new Room(2,1,"Dreta", OBERTA, TANCADA, TANCADA, TANCADA, -1, -1);
+        mapa[1][0] = new Room(1,0,"Abaix", TANCADA, OBERTA, TANCADA, TANCADA, -1, -1);
 
         this.roomRepository.deleteAllInBatch();
 
@@ -124,6 +124,9 @@ public class PlayerRestControllerTest {
         this.playerRepository.deleteAllInBatch();
         Player player = new Player("usuari");
         playerUseCase.save(player);
+
+        //Coloquem al player a la posicio inicial per fer les proves
+        playerUseCase.movePlayerToRoom(player, mapa[1][1]);
 
     }
 
