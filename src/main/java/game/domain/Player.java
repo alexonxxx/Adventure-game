@@ -1,5 +1,7 @@
 package game.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,8 +12,9 @@ public class Player {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue
+    @JsonIgnore
+    private Long id;
 
     private int life;
     private String name;
@@ -22,6 +25,10 @@ public class Player {
 
     private int key;
 
+    public Player() {
+
+    }
+
     public Player(String name) {
         this.posX = 0;
         this.posY = 0;
@@ -29,54 +36,38 @@ public class Player {
         this.name = name;
         this.weapon = 0;
         this.shield = 0;
-        this.key = 0;
+        this.key = -99;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public int getLife() {
         return life;
     }
 
-    public void setLife(int life) {
-        this.life = life;
-    }
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
+    public String getName() {
+        return name;
     }
 
     public int getWeapon() {
         return weapon;
     }
 
-    public void setWeapon(int weapon) {
-        this.weapon = weapon;
-    }
-
     public int getShield() {
         return shield;
     }
 
-    public void setShield(int shield) {
-        this.shield = shield;
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
     }
 
     public int getKey() {
-        return (this.key == 0) ? null : this.key;
-    }
-
-    public void setKey(int key) {
-        this.key = key;
+        return key;
     }
 }
