@@ -85,26 +85,27 @@ public class Player {
         return key;
     }
 
+    @JsonIgnore
     public int getINITIA_LIFE() {
         return INITIA_LIFE;
     }
-
+    @JsonIgnore
     public int getINITIA_SHIELD() {
         return INITIA_SHIELD;
     }
-
+    @JsonIgnore
     public int getINITIA_WEAPON() {
         return INITIA_WEAPON;
     }
-
+    @JsonIgnore
     public int getINITIA_KEY() {
         return INITIA_KEY;
     }
-
+    @JsonIgnore
     public int getINITIA_POSX() {
         return INITIA_POSX;
     }
-
+    @JsonIgnore
     public int getINITIA_POSY() {
         return INITIA_POSY;
     }
