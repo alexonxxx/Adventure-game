@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Player {
@@ -18,7 +19,7 @@ public class Player {
     @JsonIgnore
     private final int INITIA_WEAPON = 0;
     @JsonIgnore
-    private final int INITIA_KEY = -99;
+    private final int INITIA_KEY = -1;
     @JsonIgnore
     private final int INITIA_POSX = 0;
     @JsonIgnore
@@ -31,23 +32,24 @@ public class Player {
     private Long id;
 
     private int life;
-    private String name;
     private int weapon;
     private int shield;
-    private int posX;
-    private int posY;
+    public int x,y;
 
     private int key;
+
+    @Column(name = "username", nullable = false, unique=true)
+    private String username;
 
     public Player() {
 
     }
 
     public Player(String name) {
-        this.posX = this.INITIA_POSX;
-        this.posY = this.INITIA_POSY;
+        this.x = this.INITIA_POSX;
+        this.y = this.INITIA_POSY;
         this.life = this.INITIA_LIFE;
-        this.name = name;
+        this.username = name;
         this.weapon = this.INITIA_WEAPON;
         this.shield = this.INITIA_WEAPON;
         this.key = this.INITIA_KEY;
@@ -61,8 +63,12 @@ public class Player {
         return life;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getWeapon() {
@@ -73,12 +79,8 @@ public class Player {
         return shield;
     }
 
-    public int getPosX() {
-        return posX;
-    }
-
-    public int getPosY() {
-        return posY;
+    public String getPosition() {
+        return x +"-"+ y;
     }
 
     public int getKey() {
