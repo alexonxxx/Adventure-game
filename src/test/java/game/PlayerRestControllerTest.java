@@ -1,7 +1,9 @@
 package game;
 
+import game.domain.Monster;
 import game.domain.Player;
 import game.domain.Room;
+import game.repositories.MonsterRepository;
 import game.repositories.PlayerRepository;
 import game.repositories.RoomRepository;
 import game.useCases.PlayerUseCase;
@@ -58,6 +60,8 @@ public class PlayerRestControllerTest {
     @Autowired
     private PlayerUseCase playerUseCase;
 
+    @Autowired
+    private MonsterRepository monsterRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -135,6 +139,20 @@ public class PlayerRestControllerTest {
         Player player = new Player("nou usuari");
 
         this.mockMvc.perform(post("/player")
+                .contentType(contentType)
+                .content(json(player)))
+                .andExpect(status().isCreated())
+        ;
+    }
+    //variar
+    @Test
+    public void attackMonster() throws Exception {
+
+        Player player = playerUseCase.getFirst();
+        Room actualRoom = mapa[1][1];
+        actualRoom.setMonsterCode(1);
+        this.monsterRepository.findOne(Long.valueOf(actualRoom.getMonsterCode()));
+        this.mockMvc.perform(post("/player/attackMonster")
                 .contentType(contentType)
                 .content(json(player)))
                 .andExpect(status().isCreated())

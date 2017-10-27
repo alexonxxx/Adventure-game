@@ -91,4 +91,18 @@ public class Player {
         this.key = key;
     }
 
+    public void setPosition(int x, int y){
+        this.x=x;
+        this.y=y;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+    public int getCoordinateX(){
+        return this.x;
+    }
+    public int getCoordinateY(){
+        return this.y;
+    }
 }
