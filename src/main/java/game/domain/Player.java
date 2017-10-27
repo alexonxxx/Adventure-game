@@ -36,7 +36,7 @@ public class Player {
     private int shield;
     public int x,y;
 
-    private int key;
+    public int key;
 
     @Column(name = "username", nullable = false, unique=true)
     private String username;
@@ -87,28 +87,8 @@ public class Player {
         return key;
     }
 
-    @JsonIgnore
-    public int getINITIA_LIFE() {
-        return INITIA_LIFE;
+    public void setKey(int key) {
+        this.key = key;
     }
-    @JsonIgnore
-    public int getINITIA_SHIELD() {
-        return INITIA_SHIELD;
-    }
-    @JsonIgnore
-    public int getINITIA_WEAPON() {
-        return INITIA_WEAPON;
-    }
-    @JsonIgnore
-    public int getINITIA_KEY() {
-        return INITIA_KEY;
-    }
-    @JsonIgnore
-    public int getINITIA_POSX() {
-        return INITIA_POSX;
-    }
-    @JsonIgnore
-    public int getINITIA_POSY() {
-        return INITIA_POSY;
-    }
+
 }

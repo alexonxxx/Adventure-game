@@ -8,9 +8,20 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+
+import game.domain.Room;
+import game.repositories.RoomRepository;
+
+import static game.domain.Room.*;
+
+
 @SpringBootApplication
 @AutoConfigurationPackage
+//@ComponentScan(basePackageClasses = RoomRestController.class)
+//@ComponentScan(basePackageClasses = PlayerRestController.class)
 public class Application {
+
+    int MAX_ROOMS = 3;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -23,10 +34,6 @@ public class Application {
 
         return (evt) -> {
 
-<<<<<<< HEAD
-            // Inicialitzem un jugador
-            playerRepository.save(new Player("Pepe"));
-=======
             // Inicialitzem les habitacions
             roomRepository.save(new Room(0,0,"Entrada", TANCADA, TANCADA, OBERTA, TANCADA, -1, -1));
             roomRepository.save(new Room(1,0,"Passadis", OBERTA, TANCADA, OBERTA, TANCADA, -1, -1));
@@ -34,16 +41,11 @@ public class Application {
 
             // Inicialitzem un jugador
             playerRepository.save(new Player("One"));
->>>>>>> b78c00e129583fde8734923b5d3e5de09e5ca52d
 
         };
 
 
     }
-<<<<<<< HEAD
 
 }
-=======
-}
 
->>>>>>> b78c00e129583fde8734923b5d3e5de09e5ca52d

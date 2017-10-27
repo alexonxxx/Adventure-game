@@ -80,16 +80,6 @@ public class PlayerRestControllerTest {
                 .alwaysDo(MockMvcResultHandlers.print())
                 .build();
 
-        this.player = new Player("Pepe");
-
-        this.playerRepository.save(player);
-
-    }
-
-    @Test
-    public void showPlayerStatus() throws Exception {
-
-        this.mockMvc.perform(get("/player/getStatus")
 
 
         // Inicialitzem les habitacions
@@ -109,7 +99,6 @@ public class PlayerRestControllerTest {
                  |0 0|
                  | 0 |
                  +---+
-
                  [1,2]
             [0,1][1,1][2,1]
                  [1,0]
@@ -125,7 +114,7 @@ public class PlayerRestControllerTest {
         this.roomRepository.deleteAllInBatch();
 
         for (int i = 0; i < mapa.length ; i++) {
-        for (int j = 0; j < mapa[i].length; j++) {
+            for (int j = 0; j < mapa[i].length; j++) {
                 if (mapa[i][j] != null)
                     roomRepository.save(mapa[i][j]);
             }
@@ -341,18 +330,19 @@ public class PlayerRestControllerTest {
     @Test
     public void showPlayerStatus() throws Exception {
 
+        Player player = this.playerUseCase.getFirst();
+
         this.mockMvc.perform(get("/player/getStatus")
                 .contentType(contentType)
                 .content(""))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.life").value(this.player.getLife()))
-                .andExpect(jsonPath("$.name").value(this.player.getName()))
-                .andExpect(jsonPath("$.weapon").value(this.player.getWeapon()))
-                .andExpect(jsonPath("$.shield").value(this.player.getShield()))
-                .andExpect(jsonPath("$.posX").value(this.player.getPosX()))
-                .andExpect(jsonPath("$.posY").value(this.player.getPosY()))
-                .andExpect(jsonPath("$.key").value(this.player.getKey()))
+                .andExpect(jsonPath("$.life").value(player.getLife()))
+                .andExpect(jsonPath("$.username").value(player.getUsername()))
+                .andExpect(jsonPath("$.weapon").value(player.getWeapon()))
+                .andExpect(jsonPath("$.shield").value(player.getShield()))
+                .andExpect(jsonPath("$.position").value(player.getPosition()))
+                .andExpect(jsonPath("$.key").value(player.getKey()))
         ;
     }
 
