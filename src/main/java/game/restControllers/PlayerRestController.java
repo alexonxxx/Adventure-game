@@ -89,5 +89,12 @@ public class PlayerRestController {
 
     }
 
+    @GetMapping("/getStatus")
+    public Player getStatus() {
+
+        return this.playerUseCase.getFirst();
+
+    }
+
 
 }

@@ -56,13 +56,13 @@ public final class PlayerUseCase {
 
             // la sortida te una porta
 
-            if (player.key != v) {
+            if (player.getKey() != v) {
                 throw  new game.RoomLockedException(v);
             }
 
             // Deixa la porta oberta i gasta la clau
             room.salidas[direccio] = 0;
-            player.key = -1;
+            player.setKey(-1);
 
             roomRepository.save(room);
             playerRepository.save(player);

@@ -99,7 +99,6 @@ public class PlayerRestControllerTest {
                  |0 0|
                  | 0 |
                  +---+
-
                  [1,2]
             [0,1][1,1][2,1]
                  [1,0]
@@ -115,7 +114,7 @@ public class PlayerRestControllerTest {
         this.roomRepository.deleteAllInBatch();
 
         for (int i = 0; i < mapa.length ; i++) {
-        for (int j = 0; j < mapa[i].length; j++) {
+            for (int j = 0; j < mapa[i].length; j++) {
                 if (mapa[i][j] != null)
                     roomRepository.save(mapa[i][j]);
             }
@@ -326,6 +325,25 @@ public class PlayerRestControllerTest {
         this.mappingJackson2HttpMessageConverter.write(
                 o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
+    }
+
+    @Test
+    public void showPlayerStatus() throws Exception {
+
+        Player player = this.playerUseCase.getFirst();
+
+        this.mockMvc.perform(get("/player/getStatus")
+                .contentType(contentType)
+                .content(""))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.life").value(player.getLife()))
+                .andExpect(jsonPath("$.username").value(player.getUsername()))
+                .andExpect(jsonPath("$.weapon").value(player.getWeapon()))
+                .andExpect(jsonPath("$.shield").value(player.getShield()))
+                .andExpect(jsonPath("$.position").value(player.getPosition()))
+                .andExpect(jsonPath("$.key").value(player.getKey()))
+        ;
     }
 
 }
