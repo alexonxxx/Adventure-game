@@ -131,6 +131,8 @@ public class PlayerRestControllerTest {
         //Coloquem al player a la posicio inicial per fer les proves
         playerUseCase.movePlayerToRoom(player, mapa[1][1]);
 
+        monsterRepository.save(new Monster("monster1",2,4,-1));
+
     }
 
     @Test
@@ -145,19 +147,7 @@ public class PlayerRestControllerTest {
         ;
     }
     //variar
-    @Test
-    public void attackMonster() throws Exception {
 
-        Player player = playerUseCase.getFirst();
-        Room actualRoom = mapa[1][1];
-        actualRoom.setMonsterCode(1);
-        this.monsterRepository.findOne(Long.valueOf(actualRoom.getMonsterCode()));
-        this.mockMvc.perform(post("/player/attackMonster")
-                .contentType(contentType)
-                .content(json(player)))
-                .andExpect(status().isCreated())
-        ;
-    }
 
     @Test
     public void addPlayerAlreadyExists() throws Exception {
@@ -168,6 +158,21 @@ public class PlayerRestControllerTest {
                 .contentType(contentType)
                 .content(json(player)))
                 .andExpect(status().isConflict())
+        ;
+    }
+    @Test
+    public void attackMonster() throws Exception {
+
+        Room actualRoom = mapa[1][1];
+        actualRoom.setMonsterCode(1);
+        roomRepository.save(actualRoom);
+        this.mockMvc.perform(get("/player/attackMonster")
+                .contentType(contentType)
+                .content(""))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message").value("player loses"))
+
         ;
     }
 

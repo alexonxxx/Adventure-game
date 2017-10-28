@@ -96,32 +96,33 @@ public class PlayerRestController {
 
     }
     @GetMapping("/attackMonster")
-    public String AttackMonster(){
+    public StringResponse attackMonster(){
+        StringResponse response= new StringResponse("there isn't any monster");
         Player player = playerUseCase.getFirst();
         Room room = roomRepository.findByPosition(player.getPosition())
                 .orElseThrow(
                         () -> new game.RoomNotFoundException(player.getPosition()));
-        String message="";
+
         if(room.getMonsterCode()==-1){
-            message="{\n" +
-                    "\"message\" : \"there isn't any monster\"\n" +
-                    "}";
-        }else{
+
+            return response;
+
+        }
+        else{
         boolean result= this.playerUseCase.resultAttackMonster(player,room);
         //depenent del resultat escriura una cosa o una altra
 
         if(result){
-            message="{\n" +
-                    "\"message\" : \"monster killed, an item has spawned\"\n" +
-                    "}";
+            response.setMessage("monster killed, an item has spawned");
+
         }
         else{
-            message="{\n" +
-                    "\"message\" : \"player loses\"\n" +
-                    "}";
-        }}
+            response.setMessage("player loses");
 
-        return message;
+        }
+        }
+
+        return response;
     }
 
 
