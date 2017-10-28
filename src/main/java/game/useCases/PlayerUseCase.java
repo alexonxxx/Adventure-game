@@ -102,8 +102,8 @@ public final class PlayerUseCase {
         int y = player.getCoordinateY();
         //Room room = this.map.getRoom(x, y);
         //aqui agafariem el objecte de la llista a través del codi objecte
-        int playerAttack = 4; //obtenir item jugador
-        int playerDefense = 2; //obtenir item jugador
+        int playerAttack = player.getWeapon(); //obtenir item jugador
+        int playerDefense = player.getShield(); //obtenir item jugador
         Monster monster=this.monsterRepository.findOne(Long.valueOf(room.getMonsterCode()));
         int monsterAttack= monster.getAttack();
         int monsterLife=monster.getLife();
@@ -138,6 +138,7 @@ public final class PlayerUseCase {
                 } else {
                     playerLife = playerLife - monsterAttack;
                     if (playerLife > 0) {
+
                         player.setLife(playerLife);
                         System.out.println("El jugador ha perdut vida");
 
@@ -149,7 +150,7 @@ public final class PlayerUseCase {
                     }
                 }
                 this.playerRepository.save(player);
-                System.out.println(this.playerRepository.findAll().get(0).getLife());
+                System.out.println(getFirst().getLife());
                 //update player
                 //començar metode on es veura si guanya o perd el jugador
                 return false;
