@@ -116,6 +116,7 @@ public final class PlayerUseCase {
         } else {
             if (playerAttack >= monsterLife) {
                 System.out.println("El jugador ha guanyat");
+                room.setMonsterCode(-1);
                 this.roomRepository.save(room);
                 //update room
                 return true;
