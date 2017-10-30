@@ -95,6 +95,35 @@ public class PlayerRestController {
         return this.playerUseCase.getFirst();
 
     }
+    @GetMapping("/attackMonster")
+    public StringResponse attackMonster(){
+        StringResponse response= new StringResponse("there isn't any monster");
+        Player player = playerUseCase.getFirst();
+        Room room = roomRepository.findByPosition(player.getPosition())
+                .orElseThrow(
+                        () -> new game.RoomNotFoundException(player.getPosition()));
+
+        if(room.getMonsterCode()==-1){
+
+            return response;
+
+        }
+        else{
+        boolean result= this.playerUseCase.resultAttackMonster(player,room);
+        //depenent del resultat escriura una cosa o una altra
+
+        if(result){
+            response.setMessage("monster killed, an item has spawned");
+
+        }
+        else{
+            response.setMessage("player loses");
+
+        }
+        }
+
+        return response;
+    }
 
 
 }

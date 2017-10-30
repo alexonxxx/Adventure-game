@@ -1,5 +1,7 @@
 package game;
 
+import game.domain.Room;
+import game.repositories.RoomRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,7 @@ import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
@@ -20,15 +23,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
-
-
-import game.repositories.RoomRepository;
-import game.domain.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 
 @RunWith(SpringRunner.class)
@@ -72,14 +72,24 @@ public class RoomRestControllerTest {
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = webAppContextSetup(webApplicationContext)
+                .alwaysDo(MockMvcResultHandlers.print())
+                .build();
 
         this.roomRepository.deleteAllInBatch();
 
         this.roomList.add(roomRepository.save(new Room(0,0,"", 0, 0, 0, 0, -1, -1)));
         this.roomList.add(roomRepository.save(new Room(1,1,"", 0, 0, 0, 0, -1, -1)));
     }
-
+    @Test
+    public void showRoom() throws Exception {
+        mockMvc.perform(get("/room/1"))
+                .andExpect(status().isOk())
+                //.andExpect(content().contentType(contentType))
+//                .andExpect(jsonPath("$.id", is(this.roomList.get(0).getId().intValue())))
+//                .andExpect(jsonPath("$.description", is(this.roomList.get(0).description)))
+        ;
+    }
 
     @Test
     public void addRoom() throws Exception {

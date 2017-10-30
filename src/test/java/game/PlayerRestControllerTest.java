@@ -1,7 +1,9 @@
 package game;
 
+import game.domain.Monster;
 import game.domain.Player;
 import game.domain.Room;
+import game.repositories.MonsterRepository;
 import game.repositories.PlayerRepository;
 import game.repositories.RoomRepository;
 import game.useCases.PlayerUseCase;
@@ -58,6 +60,8 @@ public class PlayerRestControllerTest {
     @Autowired
     private PlayerUseCase playerUseCase;
 
+    @Autowired
+    private MonsterRepository monsterRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -81,19 +85,6 @@ public class PlayerRestControllerTest {
                 .build();
 
 
-        initMap();
-
-
-        this.playerRepository.deleteAllInBatch();
-        Player player = new Player("usuari");
-        playerUseCase.save(player);
-
-        //Coloquem al player a la posicio inicial per fer les proves
-        playerUseCase.movePlayerToRoom(player, mapa[1][1]);
-
-    }
-
-    private void initMap() {
 
         // Inicialitzem les habitacions
         /* norte, sur, este, oeste
@@ -132,42 +123,16 @@ public class PlayerRestControllerTest {
                     roomRepository.save(mapa[i][j]);
             }
         }
-    }
 
+        this.playerRepository.deleteAllInBatch();
+        Player player = new Player("usuari");
+        playerUseCase.save(player);
 
-    private void initMovesMap() {
+        //Coloquem al player a la posicio inicial per fer les proves
+        playerUseCase.movePlayerToRoom(player, mapa[1][1]);
 
-        // Inicialitzem les habitacions per provar els moviments
-        /* norte, sur, este, oeste
-            +---++---+
-            | 0 || 0 |
-            |0 1||1 0|
-            | 1 || 1 |
-            +---++---+
-            +---++---+
-            | 1 || 1 |
-            |0 1||1 0|
-            | 0 || 0 |
-            +---++---+
+        monsterRepository.save(new Monster("monster1",2,4,-1));
 
-            [0,0][1,0]
-            [0,1][1,1]
-         */
-
-        mapa = new Room[2][2];
-        mapa[0][0] = new Room(0,0,"Adalt", TANCADA, TANCADA, TANCADA, OBERTA, -1, -1);
-        mapa[0][1] = new Room(0,1,"Esquerra", TANCADA, TANCADA, OBERTA, TANCADA, -1, -1);
-        mapa[1][0] = new Room(1,0,"Centre", OBERTA, OBERTA, OBERTA, OBERTA, -1, -1);
-        mapa[1][1] = new Room(1,1,"Dreta", OBERTA, TANCADA, TANCADA, TANCADA, -1, -1);
-
-        this.roomRepository.deleteAllInBatch();
-
-        for (int i = 0; i < mapa.length ; i++) {
-            for (int j = 0; j < mapa[i].length; j++) {
-                if (mapa[i][j] != null)
-                    roomRepository.save(mapa[i][j]);
-            }
-        }
     }
 
     @Test
@@ -181,6 +146,8 @@ public class PlayerRestControllerTest {
                 .andExpect(status().isCreated())
         ;
     }
+    //variar
+
 
     @Test
     public void addPlayerAlreadyExists() throws Exception {
@@ -191,6 +158,21 @@ public class PlayerRestControllerTest {
                 .contentType(contentType)
                 .content(json(player)))
                 .andExpect(status().isConflict())
+        ;
+    }
+    @Test
+    public void attackMonster() throws Exception {
+
+        Room actualRoom = mapa[1][1];
+        actualRoom.setMonsterCode(1);
+        roomRepository.save(actualRoom);
+        this.mockMvc.perform(get("/player/attackMonster")
+                .contentType(contentType)
+                .content(""))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message").value("player loses"))
+
         ;
     }
 

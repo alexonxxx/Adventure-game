@@ -80,11 +80,19 @@ public class Room {
 
     }
 
+    public int getMonsterCode() {
+        return codigo_monstruo;
+    }
+
+    public void setMonsterCode(int codigo_monstruo) {
+        this.codigo_monstruo = codigo_monstruo;
+    }
+
     /*
-            0
-        0	-	0
-            0
-     */
+                    0
+                0	-	0
+                    0
+             */
     public String toString() {
 
         String s = "";
