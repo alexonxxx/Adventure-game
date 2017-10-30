@@ -36,11 +36,6 @@ public class RoomRestController {
         return this.roomRepository.findAll();
     }
 
-    @GetMapping(path="/room/{x}")
-    Room getRoom(@PathVariable int x) {
-
-        return new Room();
-    }
 
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<?> addRoom(@RequestBody Room input) { //@PathVariable String userId,
