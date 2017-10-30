@@ -21,7 +21,6 @@ import static game.domain.Room.*;
 //@ComponentScan(basePackageClasses = PlayerRestController.class)
 public class Application {
 
-
     int MAX_ROOMS = 3;
 
     public static void main(String[] args) {
@@ -47,5 +46,6 @@ public class Application {
 
 
     }
+
 }
 

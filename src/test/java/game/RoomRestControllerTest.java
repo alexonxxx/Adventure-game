@@ -12,6 +12,7 @@ import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
@@ -72,14 +73,24 @@ public class RoomRestControllerTest {
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = webAppContextSetup(webApplicationContext)
+                .alwaysDo(MockMvcResultHandlers.print())
+                .build();
 
         this.roomRepository.deleteAllInBatch();
 
         this.roomList.add(roomRepository.save(new Room(0,0,"", 0, 0, 0, 0, -1, -1)));
         this.roomList.add(roomRepository.save(new Room(1,1,"", 0, 0, 0, 0, -1, -1)));
     }
-
+    @Test
+    public void showRoom() throws Exception {
+        mockMvc.perform(get("/room/1"))
+                .andExpect(status().isOk())
+                //.andExpect(content().contentType(contentType))
+//                .andExpect(jsonPath("$.id", is(this.roomList.get(0).getId().intValue())))
+//                .andExpect(jsonPath("$.description", is(this.roomList.get(0).description)))
+        ;
+    }
 
     @Test
     public void addRoom() throws Exception {

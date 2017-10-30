@@ -1,6 +1,7 @@
 package game.repositories;
 
 
+
 import game.domain.Player;
 import game.domain.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
